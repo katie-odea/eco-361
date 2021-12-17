@@ -1,0 +1,30 @@
+---
+title: "Reshaped Brownfields Health"
+author: "Katie O'Dea and Zoe Kruse"
+date: "12/7/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(haven)
+```
+
+#Import data
+```{r import data}
+epa_brownfields <- read_dta("merged-brownfields-health.dta")
+```
+
+#Reshape wider
+```{r reshape wider}
+wider_data <- epa_brownfields %>% 
+  select(census_tract, data_value, measureid, stateabbr) %>% 
+  pivot_wider(names_from = measureid, values_from = data_value) 
+```
+
+
+#Write csv to export back to stata
+```{r write csv}
+write_csv(wider_data, "reshaped_brownfields_health.csv")
+```
